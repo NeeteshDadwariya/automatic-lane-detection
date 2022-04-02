@@ -1,2 +1,3 @@
 .idea/**
 .idea/modules.xml
+*.pyc
