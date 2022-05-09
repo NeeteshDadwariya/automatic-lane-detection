@@ -39,6 +39,9 @@ def thresholding(gray_image):
 def remove_noise(image):
     return cv2.fastNlMeansDenoisingColored(image, None, 10, 10, 7, 21)
 
+def canny(image, th1, th2, apertureSize):
+    return cv2.Canny(image, th1, th2, apertureSize=apertureSize)
+
 
 def draw_contour(image, min_area, max_area, max_contours=None, mode=cv2.RETR_EXTERNAL):
     contours, hierarchy = cv2.findContours(image, mode, cv2.CHAIN_APPROX_NONE)
@@ -57,7 +60,7 @@ def region_selection(image, max_height_from_bottom):
     else:
         ignore_mask_color = 255
     # We could have used fixed numbers as the vertices of the polygon,
-    # but they will not be applicable to images with different dimesnions.
+    # but they will not be applicable to images with different dimensions.
     rows, cols = image.shape[:2]
     bottom_left = [cols * 0, rows * 1]
     top_left = [cols * 0, rows * (1 - max_height_from_bottom)]
@@ -110,9 +113,9 @@ def hough_transform(image, masked_image, threshold, minLineLength, maxLineGap, m
     if hough_lines is None:
         return image, 0
 
-    if merge_lines:
-        for i in range(config.LINE_MERGE_COUNT):
-            hough_lines = merge_hough_lines(hough_lines)
+    # if merge_lines:
+    #     for i in range(config.LINE_MERGE_COUNT):
+    #         hough_lines = merge_hough_lines(hough_lines)
 
     hough_lines = np.squeeze(hough_lines, axis=1)
     filtered_lines = filter_lines(hough_lines)
